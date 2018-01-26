@@ -233,8 +233,8 @@ def plot(image, annotation):
 
             plt.text(int(min(bbox[0,:])), int(min(bbox[1,:])) - 2,
                     '{:s},{:s}'.format(label[t_],str(a_)),
-                    bbox=dict(facecolor='blue', alpha=0.5),
-                   fontsize=10, color='white')
+                    bbox=dict(facecolor='blue', alpha=0),
+                   fontsize=10, color='red')
     plt.scatter(x, y)
     plt.show()
 
