@@ -84,14 +84,14 @@ def info(path):
     for line in file:
         if not (line[0] == '#' or line[0] == '@'):
             line = list(map(float, line.split()[1:]))
-
+            # degree is enough to be integer, no need to be float.
             cars.append({
                 'type': int(line[0]),
                 'center.x': line[1],
                 'center.y': line[2],
                 'size_width': line[3],
                 'size_height': line[4],
-                'angle': line[5]
+                'angle': int(line[5])
             })
     if VERBOSE:
         print(cars)
@@ -232,7 +232,7 @@ def plot(image, annotation):
             #plt.text(int(min(bbox[0,:])), int(min(bbox[1,:])) - 2, str(int(t_)), fontdict=font)
 
             plt.text(int(min(bbox[0,:])), int(min(bbox[1,:])) - 2,
-                    '{:s}'.format(label[t_]),
+                    '{:s},{:s}'.format(label[t_],str(a_)),
                     bbox=dict(facecolor='blue', alpha=0.5),
                    fontsize=10, color='white')
     plt.scatter(x, y)
