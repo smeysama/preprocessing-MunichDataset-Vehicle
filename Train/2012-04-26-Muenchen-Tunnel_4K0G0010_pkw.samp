@@ -3,7 +3,7 @@
 #  + 2012-04-26-Muenchen-Tunnel_4K0G0010_van.samp
 @CATEGORY:POSITIVE
 @IMAGE:2012-04-26-Muenchen-Tunnel_4K0G0010.JPG
-# format: id type center.x center.y size.width size.height angle
+# format: id type center.x center.y size.width size.height angle  
 0 10 2261 1455 22 11 47.202598
 1 10 3195 2542 18 9 -34.911830
 2 10 1444 2367 23 11 102.736400

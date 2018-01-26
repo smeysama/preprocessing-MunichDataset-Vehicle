@@ -2,7 +2,14 @@ import xmltodict
 import numpy as np
 import pandas as pd
 from skimage.transform import rotate
+import matplotlib
+
+#matplotlib.use('Gtkagg')
+#matplotlib.use('Tkagg')
+#matplotlib.use('agg')
+
 import matplotlib.pyplot as plt
+
 import os
 import re
 import matplotlib.image as mpimage
@@ -58,7 +65,9 @@ BASE_DIR = './Train/'
 CROP_DIR = './Train/'
 
 VERBOSE = False
+VERBOSE_points = False
 
+label = {10:'pkw', 11:'pkw_trail', 16:'van', 17:'van_trail', 22:'truck', 23:'truck_trail', 20:'cam', 30:'bus'}
 #def rotateBig(img, angle=0):
 #    image = rotate(img, angle)
 #    return rotimage
@@ -185,38 +194,47 @@ def plot(image, annotation):
         'weight': 'normal',
         'size': 14,
         }
-    print(x[0])
-    print(y)
-    print(w)
-    print(h)
-    print(a)
+    if VERBOSE_points:
+        print(x[0])
+        print(y)
+        print(w)
+        print(h)
+        print(a)
     print(t)
     
     for i in range(len(x)):
             b[0,0]=x[i]
             b[1,0]=y[i]
-            w_ = w[i]
-            h_ = h[i]
-            a_ = a[i]
             t_ = t[i]
+            if t_ in [22,23,20,30]:
+                extra_w = 25
+                extra_h = 0
+            else:
+                extra_w = 12
+                extra_h = 5
+
+            w_ = w[i] + extra_w
+            h_ = h[i] + extra_h
+            a_ = a[i]
+
             bbox = np.matlib.repmat(b,1,5)+np.matmul([[math.cos(math.radians(a_)), math.sin(math.radians(a_))],[-math.sin(math.radians(a_)), math.cos(math.radians(a_))]], [[-w_/2, w_/2, w_/2, -w_/2, w_/2+8], [-h_/2, -h_/2, h_/2, h_/2, 0]])
 	
-            plt.plot([bbox[0][0],bbox[0][1]],[bbox[1][0],bbox[1][1]], linewidth=5, color='magenta')
+            plt.plot([bbox[0][0],bbox[0][1]],[bbox[1][0],bbox[1][1]], linewidth=1, color='magenta')
             ###plt.plot([bbox[0][1],bbox[0][2]],[bbox[1][1],bbox[1][2]])
-            plt.plot([bbox[0][2],bbox[0][3]],[bbox[1][2],bbox[1][3]],linewidth=5, color='magenta')
-            plt.plot([bbox[0][0],bbox[0][3]],[bbox[1][0],bbox[1][3]],linewidth=5, color='magenta')
+            plt.plot([bbox[0][2],bbox[0][3]],[bbox[1][2],bbox[1][3]],linewidth=1, color='magenta')
+            plt.plot([bbox[0][0],bbox[0][3]],[bbox[1][0],bbox[1][3]],linewidth=1, color='magenta')
             
-            plt.plot([bbox[0][1],bbox[0][4]],[bbox[1][1],bbox[1][4]], linewidth=5, color='cyan')
-            plt.plot([bbox[0][2],bbox[0][4]],[bbox[1][2],bbox[1][4]], linewidth=5, color='cyan')
+            plt.plot([bbox[0][1],bbox[0][4]],[bbox[1][1],bbox[1][4]], linewidth=1, color='cyan')
+            plt.plot([bbox[0][2],bbox[0][4]],[bbox[1][2],bbox[1][4]], linewidth=1, color='cyan')
             
             #plt.plot([bbox[0][1],bbox[0][4]],[bbox[1][1],bbox[1][4]], linewidth=3.5, color='red', marker='*', linestyle='dashed', markersize=5, markeredgecolor='red')
             #plt.plot([bbox[0][2],bbox[0][4]],[bbox[1][2],bbox[1][4]], linewidth=3.5, color='red', marker='*', linestyle='dashed', markersize=5, markeredgecolor='red')
             #plt.text(int(min(bbox[0,:])), int(min(bbox[1,:])) - 2, str(int(t_)), fontdict=font)
 
             plt.text(int(min(bbox[0,:])), int(min(bbox[1,:])) - 2,
-                    '{:s}'.format(str(int(t_))),
+                    '{:s}'.format(label[t_]),
                     bbox=dict(facecolor='blue', alpha=0.5),
-                   fontsize=14, color='white')
+                   fontsize=10, color='white')
     plt.scatter(x, y)
     plt.show()
 
@@ -231,8 +249,16 @@ if VERBOSE:
 f = parse_file(images_name, annotation)
 df = dict_to_data_frame(f[images_name[0]])
 
-image = mpimage.imread(BASE_DIR+images_name[0])
+
+a = BASE_DIR+images_name[0]
+print(a)
+image = mpimage.imread(a)
+#plt.imshow(image)
+#plt.show()
+
 plot(image, df)
+
+'''
 cropped = magic(image, df, kernel_size=960, r_stride=100, c_stride=100)
 for sub in cropped :
     if len(sub[1])>0:
@@ -242,3 +268,4 @@ for sub in cropped :
         _df = df
         _df['center.x'] , _df['center.y'] =  rotate_(df['center.x'].values,df['center.y'].values,-270, [960 / 2,960 / 2])
         plot(_270,_df)
+'''
