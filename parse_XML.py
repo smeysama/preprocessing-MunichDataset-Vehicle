@@ -73,7 +73,7 @@ VERBOSE = False
 VERBOSE_points = False
 
 Label = {10:'pkw', 11:'pkw_trail', 16:'van', 17:'van_trail', 22:'truck', 23:'truck_trail', 20:'cam', 30:'bus', 12:'motorcycle'}
-Difficult= {0 : 'nodifficult', 1 : 'shadow', 2 : 'occlusion', 3 : 'occlusionandshadow'}
+Difficult= {0 : 'nodifficult', 1 : 'shadow', 2 : 'occlusion', 3 : 'occlusionandshadow', 4 : 'tree_occlusion'}
 
 
 #def rotateBig(img, angle=0):
