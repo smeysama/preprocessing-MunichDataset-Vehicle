@@ -210,7 +210,7 @@ def plot(image, annotation):
                 extra_w = 25
                 extra_h = 0
             else:
-                extra_w = 12
+                extra_w = 15
                 extra_h = 5
 
             w_ = w[i] + extra_w
