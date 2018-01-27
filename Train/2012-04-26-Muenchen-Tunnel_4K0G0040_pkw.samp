@@ -2,6 +2,7 @@
 #  + 2012-04-26-Muenchen-Tunnel_4K0G0040_pkw.samp
 #  + 2012-04-26-Muenchen-Tunnel_4K0G0040_van.samp
 @CATEGORY:POSITIVE
+@Difficult ID: Shadow:1, Occlussion: 2, Occlusionandshadow: 3
 @IMAGE:2012-04-26-Muenchen-Tunnel_4K0G0040.JPG
 # format: id type center.x center.y size.width size.height angle  
 0 10 2883 306 22 11 82.971604
@@ -184,7 +185,7 @@
 177 10 5028 409 25 12 3.908544
 178 10 2869 426 22 11 90.389761
 179 10 2033 1642 22 11 -180.000000
-180 10 5206 397 20 10 -89.572428
+180 16 5206 397 20 10 -89.572428
 181 10 2875 361 22 11 85.999814
 182 10 2118 1587 24 12 89.255941
 183 10 5226 398 17 8 -90.996348
@@ -203,3 +204,6 @@
 193 10 5081 1847 20 10 -179
 #Sample 194 is partly in shadow cause by bridge and it is black
 194 10 5042 2011 20 10 0
+195 10 5339 581 20 10 165 2
+196 10 5345 565 20 10 165 2
+197 10 5395 399 15 10 165 2

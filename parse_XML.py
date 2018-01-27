@@ -72,7 +72,10 @@ CROP_DIR = './Train/'
 VERBOSE = False
 VERBOSE_points = False
 
-label = {10:'pkw', 11:'pkw_trail', 16:'van', 17:'van_trail', 22:'truck', 23:'truck_trail', 20:'cam', 30:'bus', 12:'motorcycle'}
+Label = {10:'pkw', 11:'pkw_trail', 16:'van', 17:'van_trail', 22:'truck', 23:'truck_trail', 20:'cam', 30:'bus', 12:'motorcycle'}
+Difficult= {0 : 'nodifficult', 1 : 'shadow', 2 : 'occlusion', 3 : 'occlusionandshadow'}
+
+
 #def rotateBig(img, angle=0):
 #    image = rotate(img, angle)
 #    return rotimage
@@ -89,6 +92,10 @@ def info(path):
     for line in file:
         if not (line[0] == '#' or line[0] == '@'):
             line = list(map(float, line.split()[0:]))
+            if len(line)==7:
+                line.append(0)
+            if VERBOSE:
+                print(line)
             # degree is enough to be integer, no need to be float.
             cars.append({
 		'id' :line[0],
@@ -97,7 +104,8 @@ def info(path):
                 'center.y': line[3],
                 'size_width': line[4],
                 'size_height': line[5],
-                'angle': int(line[6])
+                'angle': int(line[6]),
+		'difficult' : line[7]
             })
     if VERBOSE:
         print(cars)
@@ -181,7 +189,8 @@ def magic(image, images_cars, kernel_size, r_stride, c_stride):
                         'center.y': images_cars.iloc[car]['center.y'] - row,
                         'size_width': images_cars.iloc[car]['size_width'],
                         'size_height': images_cars.iloc[car]['size_height'],
-                        'angle': images_cars.iloc[car]['angle']
+                        'angle': images_cars.iloc[car]['angle'],
+                        'difficult': images_cars.iloc[car]['difficult']			
                     })
             cropped.append((image[row:row + kernel_size, col:col + kernel_size, :], cars_in_this_sub_image))
             col += c_stride
@@ -193,10 +202,12 @@ def plot(image, annotation):
     b=np.zeros((2,1))
     ax = plt.imshow(image)
     Id = annotation['id'].values
+    t = annotation['type'].values
     x, y = annotation['center.x'].values, annotation['center.y'].values
     w, h = annotation['size_width'].values, annotation['size_height'].values
     a = annotation['angle'].values
-    t = annotation['type'].values
+    difficult = annotation['difficult'].values
+
     font = {'family': 'serif',
         'color':  'darkred',
         'weight': 'normal',
@@ -208,7 +219,7 @@ def plot(image, annotation):
         print(w)
         print(h)
         print(a)
-    print(t)
+        print(t)
     
     for i in range(len(x)):
             b[0,0]=x[i]
@@ -225,6 +236,7 @@ def plot(image, annotation):
             h_ = h[i] + extra_h
             a_ = a[i]
             id_ = Id[i]
+            difficult_ = difficult[i]
 
             bbox = np.matlib.repmat(b,1,5)+np.matmul([[math.cos(math.radians(a_)), math.sin(math.radians(a_))],[-math.sin(math.radians(a_)), math.cos(math.radians(a_))]], [[-w_/2, w_/2, w_/2, -w_/2, w_/2+8], [-h_/2, -h_/2, h_/2, h_/2, 0]])
 	
@@ -239,9 +251,10 @@ def plot(image, annotation):
             #plt.plot([bbox[0][1],bbox[0][4]],[bbox[1][1],bbox[1][4]], linewidth=3.5, color='red', marker='*', linestyle='dashed', markersize=5, markeredgecolor='red')
             #plt.plot([bbox[0][2],bbox[0][4]],[bbox[1][2],bbox[1][4]], linewidth=3.5, color='red', marker='*', linestyle='dashed', markersize=5, markeredgecolor='red')
             #plt.text(int(min(bbox[0,:])), int(min(bbox[1,:])) - 2, str(int(t_)), fontdict=font)
-
+            if VERBOSE:
+                print(Difficult[difficult_])
             plt.text(int(min(bbox[0,:])), int(min(bbox[1,:])) - 2,
-                    '{:s}, {:s}, {:s}'.format(str(id_),label[t_],str(a_)),
+                    '{:s}, {:s}, {:s}'.format(str(id_),Label[t_],str(a_)),
                     bbox=dict(facecolor='blue', alpha=0),
                    fontsize=10, color='red')
     plt.scatter(x, y)
