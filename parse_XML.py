@@ -258,6 +258,12 @@ def plot(image, annotation):
                     bbox=dict(facecolor='blue', alpha=0),
                    fontsize=10, color='red')
     plt.scatter(x, y)
+    mng = plt.get_current_fig_manager()
+    #mng.resize(*mng.window.maxsize())
+    mng.frame.Maximize(True)    
+    #mng.window.state('zoomed') #works fine on Windows!
+    #mng.window.showMaximized()    
+    plt.axis('off')
     plt.show()
 
 
