@@ -88,15 +88,16 @@ def info(path):
     cars = []
     for line in file:
         if not (line[0] == '#' or line[0] == '@'):
-            line = list(map(float, line.split()[1:]))
+            line = list(map(float, line.split()[0:]))
             # degree is enough to be integer, no need to be float.
             cars.append({
-                'type': int(line[0]),
-                'center.x': line[1],
-                'center.y': line[2],
-                'size_width': line[3],
-                'size_height': line[4],
-                'angle': int(line[5])
+		'id' :line[0],
+                'type': int(line[1]),
+                'center.x': line[2],
+                'center.y': line[3],
+                'size_width': line[4],
+                'size_height': line[5],
+                'angle': int(line[6])
             })
     if VERBOSE:
         print(cars)
@@ -174,6 +175,7 @@ def magic(image, images_cars, kernel_size, r_stride, c_stride):
                 if col <= images_cars.iloc[car]['center.x'] <= col + kernel_size and row <= images_cars.iloc[car]['center.y'] <= row + kernel_size:
 
                     cars_in_this_sub_image.append({
+			'id' : images_cars.iloc[car]['id'],
                         'type': int(images_cars.iloc[car]['type']),
                         'center.x': images_cars.iloc[car]['center.x'] - col,
                         'center.y': images_cars.iloc[car]['center.y'] - row,
@@ -190,6 +192,7 @@ def magic(image, images_cars, kernel_size, r_stride, c_stride):
 def plot(image, annotation):
     b=np.zeros((2,1))
     ax = plt.imshow(image)
+    Id = annotation['id'].values
     x, y = annotation['center.x'].values, annotation['center.y'].values
     w, h = annotation['size_width'].values, annotation['size_height'].values
     a = annotation['angle'].values
@@ -221,6 +224,7 @@ def plot(image, annotation):
             w_ = w[i] + extra_w
             h_ = h[i] + extra_h
             a_ = a[i]
+            id_ = Id[i]
 
             bbox = np.matlib.repmat(b,1,5)+np.matmul([[math.cos(math.radians(a_)), math.sin(math.radians(a_))],[-math.sin(math.radians(a_)), math.cos(math.radians(a_))]], [[-w_/2, w_/2, w_/2, -w_/2, w_/2+8], [-h_/2, -h_/2, h_/2, h_/2, 0]])
 	
@@ -237,7 +241,7 @@ def plot(image, annotation):
             #plt.text(int(min(bbox[0,:])), int(min(bbox[1,:])) - 2, str(int(t_)), fontdict=font)
 
             plt.text(int(min(bbox[0,:])), int(min(bbox[1,:])) - 2,
-                    '{:s},{:s}'.format(label[t_],str(a_)),
+                    '{:s}, {:s}, {:s}'.format(str(id_),label[t_],str(a_)),
                     bbox=dict(facecolor='blue', alpha=0),
                    fontsize=10, color='red')
     plt.scatter(x, y)

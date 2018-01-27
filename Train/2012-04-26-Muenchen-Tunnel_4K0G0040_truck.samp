@@ -1,7 +1,7 @@
 @CATEGORY:GENERAL
 @IMAGE:2012-04-26-Muenchen-Tunnel_4K0G0040.JPG
 # format: id type center.x center.y size.width size.height angle  
-0 22 5445 433 53 26 -109.020122
+0 22 5447 431 56 26 -105.020122
 1 22 4533 1835 53 25 179.824784
 # sample three is a truck which has space in back without roof.
 3 22 4479 2028 27 16 0.0
