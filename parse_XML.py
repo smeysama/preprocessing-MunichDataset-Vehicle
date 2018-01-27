@@ -1,8 +1,13 @@
+
+# Author: Seyed Majid Azimi
+# Date: 24 Jan 2018
+
 import xmltodict
 import numpy as np
 import pandas as pd
 from skimage.transform import rotate
 import matplotlib
+
 
 #matplotlib.use('Gtkagg')
 #matplotlib.use('Tkagg')
