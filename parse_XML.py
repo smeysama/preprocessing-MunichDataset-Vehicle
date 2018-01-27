@@ -260,7 +260,10 @@ def plot(image, annotation):
     plt.scatter(x, y)
     mng = plt.get_current_fig_manager()
     #mng.resize(*mng.window.maxsize())
-    mng.frame.Maximize(True)    
+    # full screen with still showing toolbar
+    #mng.frame.Maximize(True)
+    # presentation full full screen without showing toolbar
+    mng.full_screen_toggle()   
     #mng.window.state('zoomed') #works fine on Windows!
     #mng.window.showMaximized()    
     plt.axis('off')
