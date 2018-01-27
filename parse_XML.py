@@ -67,7 +67,7 @@ CROP_DIR = './Train/'
 VERBOSE = False
 VERBOSE_points = False
 
-label = {10:'pkw', 11:'pkw_trail', 16:'van', 17:'van_trail', 22:'truck', 23:'truck_trail', 20:'cam', 30:'bus'}
+label = {10:'pkw', 11:'pkw_trail', 16:'van', 17:'van_trail', 22:'truck', 23:'truck_trail', 20:'cam', 30:'bus', 12:'motorcycle'}
 #def rotateBig(img, angle=0):
 #    image = rotate(img, angle)
 #    return rotimage
