@@ -222,6 +222,7 @@ def plot(image, annotation):
         print(t)
     
     for i in range(len(x)):
+	 
             b[0,0]=x[i]
             b[1,0]=y[i]
             t_ = t[i]
@@ -236,6 +237,8 @@ def plot(image, annotation):
             h_ = h[i] + extra_h
             a_ = a[i]
             id_ = Id[i]
+            if id_< 190:
+                continue
             difficult_ = difficult[i]
 
             bbox = np.matlib.repmat(b,1,5)+np.matmul([[math.cos(math.radians(a_)), math.sin(math.radians(a_))],[-math.sin(math.radians(a_)), math.cos(math.radians(a_))]], [[-w_/2, w_/2, w_/2, -w_/2, w_/2+8], [-h_/2, -h_/2, h_/2, h_/2, 0]])
@@ -257,7 +260,7 @@ def plot(image, annotation):
                     '{:s}, {:s}, {:s}'.format(str(id_),Label[t_],str(a_)),
                     bbox=dict(facecolor='blue', alpha=0),
                    fontsize=10, color='red')
-    plt.scatter(x, y)
+    #plt.scatter(x, y)
     mng = plt.get_current_fig_manager()
     #mng.resize(*mng.window.maxsize())
     # full screen with still showing toolbar
@@ -265,7 +268,8 @@ def plot(image, annotation):
     # presentation full full screen without showing toolbar
     mng.full_screen_toggle()   
     #mng.window.state('zoomed') #works fine on Windows!
-    #mng.window.showMaximized()    
+    #mng.window.showMaximized()  
+    plt.tight_layout()  
     plt.axis('off')
     plt.show()
 
